@@ -49,6 +49,8 @@ static int razer_get_report(IOUSBDeviceInterface **usb_dev, struct razer_report 
     case USB_DEVICE_ID_RAZER_NAGA_TRINITY:
     case USB_DEVICE_ID_RAZER_DEATHADDER_V2_PRO_WIRELESS:
     case USB_DEVICE_ID_RAZER_DEATHADDER_V2_PRO_WIRED:
+    case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+    case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
         return razer_get_usb_response(usb_dev, 0x00, request_report, 0x00, response_report, RAZER_VIPER_MOUSE_RECEIVER_WAIT_MIN_US);
         break;
 
@@ -322,6 +324,14 @@ ssize_t razer_mouse_attr_read_device_type(IOUSBDeviceInterface **usb_dev, char *
         device_type = "Razer Deathadder V2 Mini\n";
         break;
 
+    case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+        device_type = "Razer Naga Pro (Wireless)\n";
+        break;
+
+    case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
+        device_type = "Razer Naga Pro (Wired)\n";
+        break;
+
     default:
         device_type = "Unknown Device\n";
     }
@@ -345,6 +355,8 @@ ssize_t razer_attr_write_side_mode_wave(IOUSBDeviceInterface **usb_dev, const ch
         case USB_DEVICE_ID_RAZER_LANCEHEAD_WIRELESS_WIRED:
         case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE:
         case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
             report = razer_chroma_extended_matrix_effect_wave(VARSTORE, side, direction, 0x28);
             break;
 
@@ -355,7 +367,7 @@ ssize_t razer_attr_write_side_mode_wave(IOUSBDeviceInterface **usb_dev, const ch
             break;
 
         default:
-            printf("razermouse: logo_mode_wave not supported for this model\n");
+            printf("razermouse: side_mode_wave not supported for this model\n");
             return count;
     }
 
@@ -402,6 +414,8 @@ ssize_t razer_attr_write_side_mode_static(IOUSBDeviceInterface **usb_dev, const 
             case USB_DEVICE_ID_RAZER_DEATHADDER_V2_PRO_WIRED:
             case USB_DEVICE_ID_RAZER_DEATHADDER_V2_PRO_WIRELESS:
             case USB_DEVICE_ID_RAZER_DEATHADDER_V2_MINI:
+            case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+            case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
                 report = razer_chroma_extended_matrix_effect_static(VARSTORE, side, (struct razer_rgb*)&buf[0]);
                 break;
 
@@ -412,7 +426,7 @@ ssize_t razer_attr_write_side_mode_static(IOUSBDeviceInterface **usb_dev, const 
                 break;
 
             default:
-                printf("razermouse: logo_mode_static not supported for this model\n");
+                printf("razermouse: side_mode_static not supported for this model\n");
                 return count;
         }
 
@@ -462,6 +476,8 @@ ssize_t razer_attr_write_side_mode_static_no_store(IOUSBDeviceInterface **usb_de
             case USB_DEVICE_ID_RAZER_DEATHADDER_V2_PRO_WIRED:
             case USB_DEVICE_ID_RAZER_DEATHADDER_V2_PRO_WIRELESS:
             case USB_DEVICE_ID_RAZER_DEATHADDER_V2_MINI:
+            case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+            case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
                 report = razer_chroma_extended_matrix_effect_static(NOSTORE, side, (struct razer_rgb*)&buf[0]);
                 break;
 
@@ -519,6 +535,8 @@ ssize_t razer_attr_write_side_mode_spectrum(IOUSBDeviceInterface **usb_dev, cons
         case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2_MINI:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
             report = razer_chroma_extended_matrix_effect_spectrum(VARSTORE, side);
             break;
 
@@ -589,6 +607,8 @@ ssize_t razer_attr_write_side_mode_breath(IOUSBDeviceInterface **usb_dev, const 
         case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2_MINI:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
             switch(count) {
                 case 3: // Single colour mode
                     report = razer_chroma_extended_matrix_effect_breathing_single(VARSTORE, side, (struct razer_rgb*)&buf[0]);
@@ -658,6 +678,8 @@ ssize_t razer_attr_write_side_mode_none(IOUSBDeviceInterface **usb_dev, const ch
         case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2_MINI:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
             report = razer_chroma_extended_matrix_effect_none(VARSTORE, side);
             break;
 
@@ -668,7 +690,7 @@ ssize_t razer_attr_write_side_mode_none(IOUSBDeviceInterface **usb_dev, const ch
             break;
 
         default:
-            printf("razermouse: logo_mode_none not supported for this model\n");
+            printf("razermouse: side_mode_none not supported for this model\n");
             return count;
     }
 
@@ -697,6 +719,8 @@ ssize_t razer_attr_write_logo_mode_wave(IOUSBDeviceInterface **usb_dev, const ch
     case USB_DEVICE_ID_RAZER_LANCEHEAD_WIRELESS_WIRED:
     case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE:
     case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
+    case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+    case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
         report = razer_chroma_extended_matrix_effect_wave(VARSTORE, LOGO_LED, direction, 0x28);
         break;
 
@@ -736,6 +760,8 @@ ssize_t razer_attr_write_scroll_mode_wave(IOUSBDeviceInterface **usb_dev, const 
         case USB_DEVICE_ID_RAZER_LANCEHEAD_WIRELESS_WIRED:
         case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE:
         case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
             report = razer_chroma_extended_matrix_effect_wave(VARSTORE, SCROLL_WHEEL_LED, direction, 0x28);
             break;
 
@@ -746,7 +772,7 @@ ssize_t razer_attr_write_scroll_mode_wave(IOUSBDeviceInterface **usb_dev, const 
             break;
 
         default:
-            printf("razermouse: logo_mode_wave not supported for this model\n");
+            printf("razermouse: scroll_mode_wave not supported for this model\n");
             return count;
     }
 
@@ -818,6 +844,8 @@ ssize_t razer_attr_write_logo_mode_static(IOUSBDeviceInterface **usb_dev, const 
         case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2_MINI:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
             report = razer_chroma_extended_matrix_effect_static(VARSTORE, LOGO_LED, (struct razer_rgb*)&buf[0]);
             break;
 
@@ -831,7 +859,7 @@ ssize_t razer_attr_write_logo_mode_static(IOUSBDeviceInterface **usb_dev, const 
             report.transaction_id.id = 0x3F;
             break;
         default:
-            printf("razermouse: logo_mode_static not supported for this model\n");
+            printf("razermouse: side_mode_static not supported for this model\n");
             return count;
         }
 
@@ -844,7 +872,7 @@ ssize_t razer_attr_write_logo_mode_static(IOUSBDeviceInterface **usb_dev, const 
 }
 
 /**
- * Write device file "logo_mode_static" (for extended mouse matrix effects)
+ * Write device file "scroll_mode_static" (for extended mouse matrix effects)
  *
  * Set the mouse to static mode when 3 RGB bytes are written
  */
@@ -886,6 +914,8 @@ ssize_t razer_attr_write_scroll_mode_static(IOUSBDeviceInterface **usb_dev, cons
             case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE:
             case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
             case USB_DEVICE_ID_RAZER_DEATHADDER_V2:
+            case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+            case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
                 report = razer_chroma_extended_matrix_effect_static(VARSTORE, SCROLL_WHEEL_LED, (struct razer_rgb*)&buf[0]);
                 break;
 
@@ -900,7 +930,7 @@ ssize_t razer_attr_write_scroll_mode_static(IOUSBDeviceInterface **usb_dev, cons
                 break;
 
             default:
-                printf("razermouse: logo_mode_static not supported for this model\n");
+                printf("razermouse: scroll_mode_static not supported for this model\n");
                 return count;
         }
 
@@ -979,6 +1009,8 @@ ssize_t razer_attr_write_logo_mode_static_no_store(IOUSBDeviceInterface **usb_de
         case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2_MINI:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
             report = razer_chroma_extended_matrix_effect_static(NOSTORE, LOGO_LED, (struct razer_rgb*)&buf[0]);
             break;
 
@@ -1006,7 +1038,7 @@ ssize_t razer_attr_write_logo_mode_static_no_store(IOUSBDeviceInterface **usb_de
 }
 
 /**
- * Write device file "logo_mode_static" (for extended mouse matrix effects)
+ * Write device file "scroll_mode_static" (for extended mouse matrix effects)
  *
  * ** NOSTORE version for efficiency in custom lighting configurations
  *
@@ -1050,6 +1082,8 @@ ssize_t razer_attr_write_scroll_mode_static_no_store(IOUSBDeviceInterface **usb_
             case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE:
             case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
             case USB_DEVICE_ID_RAZER_DEATHADDER_V2:
+            case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+            case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
                 report = razer_chroma_extended_matrix_effect_static(NOSTORE, SCROLL_WHEEL_LED, (struct razer_rgb*)&buf[0]);
                 break;
 
@@ -1064,7 +1098,7 @@ ssize_t razer_attr_write_scroll_mode_static_no_store(IOUSBDeviceInterface **usb_
                 break;
 
             default:
-                printf("razermouse: logo_mode_static not supported for this model\n");
+                printf("razermouse: scroll_mode_static not supported for this model\n");
                 return count;
         }
 
@@ -1137,6 +1171,8 @@ ssize_t razer_attr_write_logo_mode_spectrum(IOUSBDeviceInterface **usb_dev, cons
     case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
     case USB_DEVICE_ID_RAZER_DEATHADDER_V2:
     case USB_DEVICE_ID_RAZER_DEATHADDER_V2_MINI:
+    case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+    case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
         report = razer_chroma_extended_matrix_effect_spectrum(VARSTORE, LOGO_LED);
         break;
 
@@ -1156,7 +1192,7 @@ ssize_t razer_attr_write_logo_mode_spectrum(IOUSBDeviceInterface **usb_dev, cons
 }
 
 /**
- * Write device file "logo_mode_spectrum" (for extended mouse matrix effects)
+ * Write device file "scroll_mode_spectrum" (for extended mouse matrix effects)
  *
  * Spectrum effect mode is activated whenever the file is written to
  */
@@ -1195,6 +1231,8 @@ ssize_t razer_attr_write_scroll_mode_spectrum(IOUSBDeviceInterface **usb_dev, co
         case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE:
         case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
             report = razer_chroma_extended_matrix_effect_spectrum(VARSTORE, SCROLL_WHEEL_LED);
             break;
 
@@ -1205,7 +1243,7 @@ ssize_t razer_attr_write_scroll_mode_spectrum(IOUSBDeviceInterface **usb_dev, co
             break;
 
         default:
-            printf("razermouse: logo_mode_spectrum not supported for this model\n");
+            printf("razermouse: scroll_mode_spectrum not supported for this model\n");
             return count;
     }
 
@@ -1291,6 +1329,8 @@ ssize_t razer_attr_write_logo_mode_breath(IOUSBDeviceInterface **usb_dev, const 
     case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
     case USB_DEVICE_ID_RAZER_DEATHADDER_V2:
     case USB_DEVICE_ID_RAZER_DEATHADDER_V2_MINI:
+    case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+    case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
         switch(count) {
         case 3: // Single colour mode
             report = razer_chroma_extended_matrix_effect_breathing_single(VARSTORE, LOGO_LED, (struct razer_rgb*)&buf[0]);
@@ -1378,6 +1418,8 @@ ssize_t razer_attr_write_scroll_mode_breath(IOUSBDeviceInterface **usb_dev, cons
         case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE:
         case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
             switch(count) {
                 case 3: // Single colour mode
                     report = razer_chroma_extended_matrix_effect_breathing_single(VARSTORE, SCROLL_WHEEL_LED, (struct razer_rgb*)&buf[0]);
@@ -1472,6 +1514,8 @@ ssize_t razer_attr_write_logo_mode_none(IOUSBDeviceInterface **usb_dev, const ch
     case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
     case USB_DEVICE_ID_RAZER_DEATHADDER_V2:
     case USB_DEVICE_ID_RAZER_DEATHADDER_V2_MINI:
+    case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+    case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
         report = razer_chroma_extended_matrix_effect_none(VARSTORE, LOGO_LED);
         break;
 
@@ -1492,7 +1536,7 @@ ssize_t razer_attr_write_logo_mode_none(IOUSBDeviceInterface **usb_dev, const ch
 }
 
 /**
- * Write device file "logo_mode_none" (for extended mouse matrix effects)
+ * Write device file "scroll_mode_none" (for extended mouse matrix effects)
  *
  * No effect is activated whenever this file is written to
  */
@@ -1533,6 +1577,8 @@ ssize_t razer_attr_write_scroll_mode_none(IOUSBDeviceInterface **usb_dev, const 
         case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE:
         case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
             report = razer_chroma_extended_matrix_effect_none(VARSTORE, SCROLL_WHEEL_LED);
             break;
 
@@ -1543,7 +1589,7 @@ ssize_t razer_attr_write_scroll_mode_none(IOUSBDeviceInterface **usb_dev, const 
             break;
 
         default:
-            printf("razermouse: logo_mode_none not supported for this model\n");
+            printf("razermouse: scroll_mode_none not supported for this model\n");
             return count;
     }
 
@@ -1620,7 +1666,7 @@ ssize_t razer_attr_write_logo_led_rgb(IOUSBDeviceInterface **usb_dev, const char
 }
 
 /**
- * Write device file "mode_reactive"
+ * Write device file "logo_mode_reactive"
  *
  * Sets reactive mode when this file is written to. A speed byte and 3 RGB bytes should be written
  */
@@ -1661,6 +1707,8 @@ ssize_t razer_attr_write_logo_mode_reactive(IOUSBDeviceInterface **usb_dev, cons
         case USB_DEVICE_ID_RAZER_BASILISK:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2_MINI:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
             report = razer_chroma_extended_matrix_effect_reactive(VARSTORE, LOGO_LED, speed, (struct razer_rgb*)&buf[1]);
             break;
 
@@ -1716,6 +1764,8 @@ ssize_t razer_attr_write_scroll_mode_reactive(IOUSBDeviceInterface **usb_dev, co
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2_PRO_WIRED:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
             report = razer_chroma_extended_matrix_effect_reactive(VARSTORE, SCROLL_WHEEL_LED, speed, (struct razer_rgb*)&buf[1]);
             break;
 
@@ -1754,6 +1804,8 @@ ssize_t razer_attr_write_side_mode_reactive(IOUSBDeviceInterface **usb_dev, cons
         case USB_DEVICE_ID_RAZER_LANCEHEAD_TE_WIRED:
         case USB_DEVICE_ID_RAZER_LANCEHEAD_WIRELESS_RECEIVER:
         case USB_DEVICE_ID_RAZER_LANCEHEAD_WIRELESS_WIRED:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
             report = razer_chroma_extended_matrix_effect_reactive(VARSTORE, side, speed, (struct razer_rgb*)&buf[1]);
             break;
 
@@ -1828,6 +1880,8 @@ ssize_t razer_attr_read_get_battery(IOUSBDeviceInterface **usb_dev, char *buf)
         case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2_PRO_WIRED:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
             report.transaction_id.id = 0x3f;
             break;
         case USB_DEVICE_ID_RAZER_LANCEHEAD_WIRELESS_RECEIVER:
@@ -1860,6 +1914,8 @@ ssize_t razer_attr_read_is_charging(IOUSBDeviceInterface **usb_dev, char *buf)
         case USB_DEVICE_ID_RAZER_BASILISK_ULTIMATE_RECEIVER:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2_PRO_WIRED:
         case USB_DEVICE_ID_RAZER_DEATHADDER_V2_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS:
+        case USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED:
             report.transaction_id.id = 0x3f;
             break;
         case USB_DEVICE_ID_RAZER_LANCEHEAD_WIRELESS_RECEIVER:

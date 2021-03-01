@@ -635,12 +635,12 @@ struct razer_report razer_chroma_extended_matrix_effect_reactive(unsigned char v
     struct razer_report report = razer_chroma_extended_matrix_effect_base(0x09, variable_storage, led_id, 0x05);
 
     speed = clamp_u8(speed, 0x01, 0x04);
-    
+
     report.arguments[4] = speed;
     report.arguments[5] = 0x01;
     report.arguments[6] = rgb->r;
     report.arguments[7] = rgb->g;
-    report.arguments[8] = rgb->b; 
+    report.arguments[8] = rgb->b;
 
     return report;
 }

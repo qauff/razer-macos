@@ -8,7 +8,7 @@
  * Software Foundation; either version 2 of the License, or (at your option)
  * any later version.
  */
- 
+
 #include <IOKit/IOKitLib.h>
 #include <IOKit/usb/IOUSBLib.h>
 
@@ -69,6 +69,8 @@
 #define USB_DEVICE_ID_RAZER_DEATHADDER_V2_MINI 0x008C
 #define USB_DEVICE_ID_RAZER_VIPER_MINI 0x008A
 #define USB_DEVICE_ID_RAZER_BASILISK_V2 0x0085
+#define USB_DEVICE_ID_RAZER_NAGA_PRO_WIRELESS 0x0090
+#define USB_DEVICE_ID_RAZER_NAGA_PRO_WIRED 0x008f
 
 /* Each keyboard report has 90 bytes*/
 #define RAZER_REPORT_LEN 0x5A
